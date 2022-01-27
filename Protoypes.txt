@@ -1,0 +1,41 @@
+Prototypes
+
+Classes in JS are 'syntactic sugar' over prototypal inheritance
+--basically prototypal inheritance
+
+
+Classes dont really exist added in to just make working with inheritance and objects easier 
+ for engineers who normally work with java C# etc.
+
+ // class Boat {
+//   color: string = 'red';
+//    pilot():void {
+//      console.log('swish')
+//    }
+// }
+
+var Boat = /** @class */ (function () {
+  function Boat() {
+    //constructor function to initialize initial properties
+    //holds plain properties
+    this.color = 'red';
+  }
+  Boat.prototype.pilot = function() {
+    //any methods attached to prototype
+    //associate any different methods gotta use prototype property
+    
+    //JS thinks __proto__ does not exist
+    //added by chrome browser for debugging
+    //if it doesnt have pilot method in plain properties it will look inside
+    //prototype object and find the pilor method without us knowing
+    //protoype easily modified
+
+    //add prototypes even after the instance was created
+    //modify every active instance or future instance
+    Boat.prototype.sink = function() {
+      console.log('sinnk')
+    }
+    console.log('swish');
+  };
+  return Boat;
+}());
