@@ -1,0 +1,107 @@
+Decorators
+- Are functions that can be used to modify/change/anything
+    different properties/ methods in the class
+- TS decorators different from JS Decorators
+- Used around classes coupled with class definiton
+- Understanding the order in which decorators are ran are the 
+    key to understanding them (used inside class at different locations)
+    -Order in Operations
+
+- Are Experimental!
+
+
+Decorators on a property, method, accesor
+
+- First arguement is the prototype of the object
+- Second arguement is the key of the property/method/accesor
+  on the object
+- Third arguement is the property descriptor (more on this
+    in a second)
+- Decorators are applied when the code for this class is ran 
+    (not when an instance is created)
+
+function decoratorName(target:any, key:string, desc: PropertyDescriptor):void {
+  const method = desc.value;
+
+  desc.value = function() {
+    try{
+      method();
+    } catch(error){
+      console.log('Oops, error')
+    }
+  }
+}
+-> logError decorator
+@logError
+
+PropertyDescriptor -> part of ES5 JS, an object that has some 
+  configuration options around a property defined on an object
+
+applied by @decoratorName above property/ method/ accesor
+
+PropertyDescriptor for methods -> is essentially an object that is meant to configure
+  a property on another object
+
+  - writable flag -> boolean (T or F) that describes whether or not this property can
+        be changed
+  - enumerable property -> describes whether or not this property gets looped over by a 
+        'for...in'
+  - value -> current value of the property
+  - configurable flag -> describes whether or not we can change the configuration of the property
+    and if the property can be deleted
+
+const car = {make: 'honda', year:2000};
+
+Object.getOwnPropertyDescriptor(car, 'make'); -> gives me PropertyDescriptor
+
+Object.defineProperty(car, 'make', { writable:false});
+ -> updated writable property of 'make' to false so it CANNOT be updated its value
+ -> NO LONGER WRITEABLE 
+
+
+ Decorator Factory
+ - A decorator that returns a function
+ - Lets us customize it easily
+
+@logError('Oops error!')
+
+function logError(errorMessage: string){
+  return function(target:any, key:string, desc: PropertyDescriptor):void {
+    const method = desc.value;
+
+    desc.value = function() {
+      try{
+        method();
+      } catch(error){
+        console.log(errorMessage)
+      }
+    }
+  }
+}
+
+Decorator can never access instance properties on an instance
+NOT avaliable to us 
+-> Decorator being executed before ever creating an instance
+-> The only value given to Decorator is the prototype
+
+pilot(@parameterDecorator speed:string, @parameterDecorator generateWake: boolean): void {
+  if(speed === 'fast'){
+    console.log('swish);
+  } else {
+    console.log('nothing')
+  }
+}
+
+function parameterDecorator(target:any, key:string, index:number){
+  console.log(key, index)
+  -index of parameter aka arguement
+}
+
+function classDecorator(constructor: typeof Boat) {
+  console.log(constructor)
+}
+
+@classDecorator
+class Boat {
+  
+}

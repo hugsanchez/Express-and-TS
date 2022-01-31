@@ -10,3 +10,14 @@ PROS OF TYPE DEFINITION FILES
 
 Editing the type definition file never good idea
 -dependency to project edits get deleted
+
+METADATA
+
+- Essentially a snippet of information that can be tied to a method on a class, a property on a class, or a class definition itself
+  (Essentially any kind of object)
+
+- Can be used for super custom stuff
+- TS will (optionally) provide type information as metadata
+  (normally when we convert TS to JS all the TS code gets wiped away but this optinal feature exports some type information)
+- Proposed feature to be added to JS (and thus TS)
+- Read and written using the reflect-metadata package
